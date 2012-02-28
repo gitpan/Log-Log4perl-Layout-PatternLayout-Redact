@@ -35,13 +35,13 @@ can be PCI-compliant.
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
-our $SENSITIVE_ARGUMENTS_NAME = undef;
+our $SENSITIVE_ARGUMENT_NAMES = undef;
 
 
 =head1 SYNOPSIS
@@ -59,6 +59,19 @@ Here's an example of log4perl configuration that outputs a redacted trace
 	log4perl.appender.logfile.recreate                 = 1
 	log4perl.appender.logfile.mode                     = append
 
+To set your own list of arguments to redact, rather than use the defaults in C<Carp::Parse::Redact>,
+you need to set a package variable $SENSITIVE_ARGUMENT_NAMES, ie
+
+	$Log::Log4perl::Layout::PatternLayout::Redact::SENSITIVE_ARGUMENT_NAMES = 
+	[
+		'password',
+		'luggage_combination',
+		'favorite_pony',
+	];
+
+And hash keys in the stack trace that match these names will have their values replaced with '[redacted]'.
+Be sure to do this after you have initialized your logger.
+
 =cut
 
 # Add '%E' to the list of options available for the Log4perl layout.
@@ -71,7 +84,7 @@ Log::Log4perl::Layout::PatternLayout::add_global_cspec(
 		
 		my $redacted_stack_trace = Carp::Parse::Redact::parse_stack_trace(
 			$trace,
-			sensitive_argument_names => $SENSITIVE_ARGUMENTS_NAME,
+			sensitive_argument_names => $SENSITIVE_ARGUMENT_NAMES,
 		);
 		
 		# For each line of the stack trace, replace the original arguments with the
