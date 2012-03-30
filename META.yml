@@ -5,7 +5,7 @@ author:
   - 'Kate Kirby <kate@cpan.org>'
 build_requires:
   Carp: 0
-  Carp::Parse::Redact: 0
+  Carp::Parse::Redact: 1.001000
   Data::Dumper: 0
   File::Spec: 0
   File::Temp: 0
@@ -26,9 +26,9 @@ name: Log-Log4perl-Layout-PatternLayout-Redact
 provides:
   Log::Log4perl::Layout::PatternLayout::Redact:
     file: lib/Log/Log4perl/Layout/PatternLayout/Redact.pm
-    version: v1.0.3
+    version: v1.1.1
 requires:
   perl: 5.006
 resources:
   license: http://opensource.org/licenses/artistic-license.php
-version: v1.0.3
+version: v1.1.1

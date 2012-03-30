@@ -35,13 +35,14 @@ can be PCI-compliant.
 
 =head1 VERSION
 
-Version 1.0.3
+Version 1.1.1
 
 =cut
 
-our $VERSION = '1.0.3';
+our $VERSION = '1.1.1';
 
 our $SENSITIVE_ARGUMENT_NAMES = undef;
+our $SENSITIVE_REGEXP_PATTERNS = undef;
 
 
 =head1 SYNOPSIS
@@ -60,9 +61,9 @@ Here's an example of log4perl configuration that outputs a redacted trace
 	log4perl.appender.logfile.mode                     = append
 
 To set your own list of arguments to redact, rather than use the defaults in C<Carp::Parse::Redact>,
-you need to set a package variable $SENSITIVE_ARGUMENT_NAMES, ie
+you need to set a localized version of $SENSITIVE_ARGUMENT_NAMES:
 
-	$Log::Log4perl::Layout::PatternLayout::Redact::SENSITIVE_ARGUMENT_NAMES = 
+	local $Log::Log4perl::Layout::PatternLayout::Redact::SENSITIVE_ARGUMENT_NAMES = 
 	[
 		'password',
 		'luggage_combination',
@@ -70,7 +71,21 @@ you need to set a package variable $SENSITIVE_ARGUMENT_NAMES, ie
 	];
 
 And hash keys in the stack trace that match these names will have their values replaced with '[redacted]'.
-Be sure to do this after you have initialized your logger.
+
+To set your own list of regexes to use for redaction, rather than use the
+defaults in C<Carp::Parse::Redact>, you need to set a localized version of
+$SENSITIVE_REGEXP_PATTERNS:
+
+	local $Log::Log4perl::Layout::PatternLayout::Redact::SENSITIVE_REGEXP_PATTERNS =
+	[
+		qr/^\d{16}$/,
+	]
+
+And any argument in the stack trace that matches one of the regexes provided
+will be replaced with '[redacted]'.
+
+Be sure to do the localizations of the package variables after you have
+initialized your logger.
 
 =cut
 
@@ -84,7 +99,8 @@ Log::Log4perl::Layout::PatternLayout::add_global_cspec(
 		
 		my $redacted_stack_trace = Carp::Parse::Redact::parse_stack_trace(
 			$trace,
-			sensitive_argument_names => $SENSITIVE_ARGUMENT_NAMES,
+			sensitive_argument_names  => $SENSITIVE_ARGUMENT_NAMES,
+			sensitive_regexp_patterns => $SENSITIVE_REGEXP_PATTERNS,
 		);
 		
 		# For each line of the stack trace, replace the original arguments with the
