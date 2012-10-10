@@ -17,16 +17,12 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Carp" : "0",
-            "Carp::Parse::Redact" : "1.001000",
             "Data::Dumper" : "0",
             "File::Spec" : "0",
             "File::Temp" : "0",
-            "Log::Log4perl" : "0",
             "Perl6::Slurp" : "0",
             "Test::Exception" : "0",
-            "Test::More" : "0",
-            "Try::Tiny" : "0"
+            "Test::More" : "0"
          }
       },
       "configure" : {
@@ -36,6 +32,11 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
+            "Carp::Parse::Redact" : "1.001000",
+            "Data::Validate::Type" : "0",
+            "Log::Log4perl" : "0",
+            "Try::Tiny" : "0",
             "perl" : "5.006"
          }
       }
@@ -43,7 +44,7 @@
    "provides" : {
       "Log::Log4perl::Layout::PatternLayout::Redact" : {
          "file" : "lib/Log/Log4perl/Layout/PatternLayout/Redact.pm",
-         "version" : "v1.2.1"
+         "version" : "v1.2.2"
       }
    },
    "release_status" : "stable",
@@ -59,5 +60,5 @@
          "url" : "https://github.com/katekirby/Log-Log4perl-Layout-PatternLayout-Redact.git"
       }
    },
-   "version" : "v1.2.1"
+   "version" : "v1.2.2"
 }
